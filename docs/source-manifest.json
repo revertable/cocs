@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "baseline": {
+    "repository": "https://github.com/revertable/cocs",
+    "commit": "ffc04bfbac31d731e98e6589f97e8ea30f4a94cb"
+  },
+  "narrative_source": "README.md at the baseline commit and subsequent author recollections on the same topics retained in the pre-revision README.",
+  "hash_algorithm": "SHA-256",
+  "entries": [
+    {
+      "public_path": "cases/01-screen-lifecycle/ViewX.js",
+      "classification": "Excerpt",
+      "source_path": "src/main/resources/static/js/ViewX.js",
+      "selection": "complete-file",
+      "sha256": "f5abafeb37b943c704af335a41d51ca706fe2cfb9a2d097f9071dc26d3b43ef6"
+    },
+    {
+      "public_path": "cases/01-screen-lifecycle/SBUx-render.js",
+      "classification": "Excerpt",
+      "source_path": "src/main/resources/static/js/SBUx-render.js",
+      "selection": "complete-file",
+      "sha256": "27e1d0bd3786a9bfbf75ffba2ee49eed33da28b44e058765876eb437a9768f78"
+    },
+    {
+      "public_path": "cases/02-requests-and-navigation/Korbiztech.exios.js",
+      "classification": "Excerpt",
+      "source_path": "src/main/resources/static/js/Korbiztech.exios.js",
+      "selection": "complete-file",
+      "sha256": "1e124e4fa3aabe5bdd77db55301d3e33c6e89884fd4c03cdc3ec1d8e522a921b"
+    },
+    {
+      "public_path": "cases/02-requests-and-navigation/Router.js",
+      "classification": "Excerpt",
+      "source_path": "src/main/resources/static/js/Router.js",
+      "selection": "complete-file",
+      "sha256": "4b407b012194cc0cf2f70805718bd07c58fd53e0a64ac6c4c0547fccca88956a"
+    },
+    {
+      "public_path": "cases/02-requests-and-navigation/Menu.js",
+      "classification": "Excerpt",
+      "source_path": "src/main/resources/static/js/Menu.js",
+      "selection": "complete-file",
+      "sha256": "159db31f11aea3c30589e17aa925bed847014962730a845f8a2b52252e9cf093"
+    },
+    {
+      "public_path": "cases/03-grid-integration/Korbiztech.js",
+      "classification": "Excerpt",
+      "source_path": "src/main/resources/static/js/Korbiztech.js",
+      "selection": "complete-file",
+      "sha256": "ae6ac8b3d661cf5f3871f973482f2dadb88cbe653ae3f511c190709e22abcf5d"
+    },
+    {
+      "public_path": "cases/04-grid-save-pipeline/BGA010.html",
+      "classification": "Excerpt",
+      "source_path": "src/main/resources/templates/CM/BG/BGA010.html",
+      "selection": "complete-file",
+      "sha256": "1922655d107406f72225c599d32bb8fd8a5af1298d20e77edbabd8c6c6ce80bc"
+    },
+    {
+      "public_path": "cases/04-grid-save-pipeline/BGA010_Service.java",
+      "classification": "Excerpt",
+      "source_path": "src/main/java/com/korbiztech/product/cocs/CM/BG/service/BGA010_Service.java",
+      "selection": "complete-file",
+      "sha256": "5542c6cb9b2f276ffd50a5fc81450a68a3db0f8182f6d5197e08292b36ccd81b"
+    },
+    {
+      "public_path": "cases/04-grid-save-pipeline/BGA010_RestController.java",
+      "classification": "Excerpt",
+      "source_path": "src/main/java/com/korbiztech/product/cocs/CM/BG/restController/BGA010_RestController.java",
+      "selection": "complete-file",
+      "sha256": "a917cbcce29c3b8b1956daa3648d923543a4c599715135d038ed2e1ced4e61d1"
+    },
+    {
+      "public_path": "cases/04-grid-save-pipeline/BGA010_DAO.java",
+      "classification": "Excerpt",
+      "source_path": "src/main/java/com/korbiztech/product/cocs/CM/BG/dao/BGA010_DAO.java",
+      "selection": "complete-file",
+      "sha256": "63162a46993fa114c49ea727b57d0dba265530e4a43167bf7e34df67fd347e1f"
+    },
+    {
+      "public_path": "cases/04-grid-save-pipeline/BGA010_VO.java",
+      "classification": "Excerpt",
+      "source_path": "src/main/java/com/korbiztech/product/cocs/CM/BG/vo/BGA010_VO.java",
+      "selection": "complete-file",
+      "sha256": "86b0716369cfc3183d710bcca43905a92f52bf3f064131c35da8d7f4610dd218"
+    },
+    {
+      "public_path": "cases/04-grid-save-pipeline/BGA010.xml",
+      "classification": "Excerpt",
+      "source_path": "src/main/resources/mybatis/mapper/oracle/CM/BG/BGA010.xml",
+      "selection": "complete-file",
+      "sha256": "a11f27000c39e481c8ced0761ce8841d77684992848e7f447a320273cc2ab012"
+    },
+    {
+      "public_path": "cases/04-grid-save-pipeline/SaveGridDataVO.java",
+      "classification": "Excerpt",
+      "source_path": "src/main/java/com/korbiztech/product/cocs/COM/vo/SaveGridDataVO.java",
+      "selection": "complete-file",
+      "sha256": "1d67fe94afe3858eb8e716234e4a395c533add14ea86c3f0e1d302e99fd4e574"
+    },
+    {
+      "public_path": "cases/04-grid-save-pipeline/JsonUtil.java",
+      "classification": "Excerpt",
+      "source_path": "src/main/java/com/korbiztech/product/cocs/COM/util/JsonUtil.java",
+      "selection": "complete-file",
+      "sha256": "c729a19b98268b34cd65e38772cf8a3e7404401e831aed68cae92ffafe9c13d9"
+    }
+  ]
+}

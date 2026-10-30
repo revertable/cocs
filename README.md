@@ -1,197 +1,70 @@
-> ⚠️ **라이선스 고지**  
-> 본 프로젝트는 팀 협업 결과물로, 회사로부터 **비상업적 포트폴리오 공개 목적에 한해** 사용 허가를 받았습니다.  
-> 이 코드는 **오픈소스로 배포되지 않으며**, 무단 복제, 재배포, 상업적 이용은 금지됩니다.  
-> 자세한 내용은 [LICENSE 파일](./LICENSE)을 참고하세요.
-
----
-
 # COC'S
 
-> 건설 ERP 프로젝트  
-> 이음아이앤씨와 계약하여 한국비즈텍의 ERP 시스템 구축 프로젝트를 수행하며,  
-> Spring Boot 기반의 아키텍처를 직접 설계하고 공통 코드 전반을 작성한 팀장 주도 프로젝트입니다.
+[한국어](README.ko.md)
 
----
+COC'S presents selected implementation code and engineering decisions from a construction ERP project. Under a contract with Ieum I&C, I participated in building Korea Biztech's ERP system and led the development team, designing the Spring Boot architecture and implementing shared code.
 
-## 🧑‍💻 프로젝트 개요
+The system supported user management, construction process management, proposals and approvals, and performance aggregation. The company authorized publication of this team project for a non-commercial portfolio. Publication terms are recorded in [LICENSE](LICENSE).
 
-COC'S는 건설업에 특화된 ERP 시스템의 서버 애플리케이션으로, 사용자 관리, 공정 관리, 품의/결재, 실적 집계 등  
-다양한 업무 프로세스를 지원하는 웹 기반 백오피스 시스템입니다.
+## My role
 
-본 프로젝트는 다음과 같은 환경에서 수행되었으며, 아키텍처 설계부터 공통 모듈 작성, 개발 리딩까지  
-전반적인 영역을 직접 주도하였습니다.
+- Designed the backend architecture and Spring Boot module structure.
+- Designed and implemented shared screen structure, permission handling, menu binding, and SBUx integration.
+- Integrated SBGrid data entry, queries, and Excel workflows into shared code.
+- Led technology selection and early technical reviews, established development guidelines, reviewed team members' code, and managed code quality.
 
----
+SBUx and SBGrid are external products. My work focused on the shared structure and integration code around them. Combining SBGrid APIs with custom JavaScript produced a common extension layer that the team could reuse across business screens.
 
-## 🛠️ 사용 기술 스택
+## Technology
 
-| 항목 | 내용 |
-|------|------|
-| **Backend** | Java 17, Spring Boot 3.0.11 |
-| **Template Engine** | Thymeleaf 3.1.4 |
-| **Database** | Oracle |
-| **Frontend Component** | [SBGrid](https://www.sbgrid.co.kr/) (스프레드시트 기반 그리드 컴포넌트) |
-| **Build Tool** | Gradle |
+| Area | Technology recorded in the original README |
+|---|---|
+| Backend | Java 17, Spring Boot 3.0.11 |
+| Template engine | Thymeleaf 3.1.4 |
+| Database | Oracle |
+| Frontend component | SBGrid |
+| Build tool | Gradle |
 
----
+## Engineering decisions and code
 
-## 🧩 시스템 설계 및 구조적 철학
-COCS 프로젝트는 단순한 CRUD를 넘어서, '전체 사이클을 통제 가능한 구조'를 목표로 설계되었습니다.  
-프레임워크에 과도하게 의존하지 않고도 유지보수성과 일관성을 확보하기 위해,  
-자체 유틸리티 모듈과 화면 상태 감시 체계를 직접 구축했습니다.
+The repository connects selected code with its design context. All 14 code files are **Excerpt**: complete original files selected from commit `ffc04bfbac31d731e98e6589f97e8ea30f4a94cb`, preserving their bytes, names, and comments. [The source manifest](docs/source-manifest.json) records the original paths and SHA-256 hashes.
 
-### ▸ ViewX: 전역 상태 관리 및 렌더링 통합 구조
-- Vuex 패턴을 참고하여 JavaScript 전역 객체를 namespace 기반으로 관리
-- 상태 변경 감지 → 연관된 UI 렌더링 자동화
-- 불필요한 DOM 업데이트 제거, 각 기능 간 결합도 최소화
+| Case | Design focus | Starting point |
+|---|---|---|
+| 01 | Shared screen state and component initialization | [ViewX.js](cases/01-screen-lifecycle/ViewX.js) · [Decision](docs/engineering-decisions.md#case-01) |
+| 02 | Familiar HTTP APIs and navigation control | [exios](cases/02-requests-and-navigation/Korbiztech.exios.js) · [Decision](docs/engineering-decisions.md#case-02) |
+| 03 | Reusable grid operations and integration | [Korbiztech.js](cases/03-grid-integration/Korbiztech.js) · [Decision](docs/engineering-decisions.md#case-03) |
+| 04 | Connecting screen operations to server persistence | [BGA010.html](cases/04-grid-save-pipeline/BGA010.html) · [Decision](docs/engineering-decisions.md#case-04) |
 
-### ▸ exios: 커스텀 HTTP 유틸리티
-- axios 스타일을 차용한 경량 HTTP 통신 유틸리티
-- 요청 취소 토큰 관리 기능 포함 → 병렬 처리 중 중복 방지
-- 프론트 환경이 레거시 구조(jsp 기반)여도 사용 가능하도록 설계됨
+BGA010 provides a compact reading path through the shared save flow. The original README's representative screen, [BGA030.html](https://github.com/revertable/cocs/blob/ffc04bfbac31d731e98e6589f97e8ea30f4a94cb/src/main/resources/templates/CM/BG/BGA030.html), combines trees, multiple grids, file uploads, and BGA031–BGA034 modals. Its [service](https://github.com/revertable/cocs/blob/ffc04bfbac31d731e98e6589f97e8ea30f4a94cb/src/main/java/com/korbiztech/product/cocs/CM/BG/service/BGA030_Service.java) provides the broader context for grid persistence, uploads, and tree queries.
 
-### ▸ SBUx: 모듈화된 화면 구조 및 유틸리티 초기화 체계
-- 콘텐츠 변화 감지를 기반으로 기능 바인딩이 자동 수행
-- grid 컴포넌트, 버튼 액션, 권한, 라우팅 등을 하나의 cycle로 통제
-- 화면 간 이동이 많은 환경에서 반복 로직 제거 및 실수 최소화
-  
----
+## How I approached the structure
 
-## 📦 화면 구조
+> Structure is quality, and reducing repetition is the beginning of maintainability.
 
-COCS 구조는 아래 예제 HTML 파일들에서 확인할 수 있습니다.  
-마크업 파일마다 `viewX` 객체가 선언되어 있으며, 각 화면에 필요한 초기화 로직 및 이벤트 핸들링이 포함되어 있습니다.
+I wanted the team to understand and control the entire cycle: screen state, handlers, requests, component initialization, grid editing, and server persistence. In a short-schedule, 0 → 1 project, I made architectural decisions and built the shared foundation through hands-on development.
 
-- [`BGA030.html`](https://github.com/revertable/cocs/blob/master/src/main/resources/templates/CM/BG/BGA030.html) – 실행내역편성 대표 화면 예시
-  - 트리, 다중 그리드, 파일 업로드, 모달(`BGA031 ~ BGA034`)을 포함한 화면으로 실제 업무 흐름이 가장 많이 반영된 예시입니다.
+As development lead, I prioritized foundations and conventions for the whole team. Management assessed progress through visible business screens and asked me to implement a screen to demonstrate progress. My focus was on enabling teammates to build that screen and many others. This was a difference in how we assessed progress: individual screen delivery and the shared foundation for the team's work.
 
-📄 [`BGA030_Service.java`](https://github.com/revertable/cocs/blob/master/src/main/java/com/korbiztech/product/cocs/CM/BG/service/BGA030_Service.java)  
-해당 Java 서비스 클래스는 Grid 저장 로직, 파일 업로드, 트리 데이터 조회 등 주요 서버 비즈니스 로직을 처리합니다.
+Requests concerning numeric alignment and empty-value validation arrived while basic grid operations were taking shape. I valued validation and screen polish, and chose a sequence that established shared behavior first, then refined validation and presentation rules.
 
-📂 [🔗 Static JS 디렉토리 바로가기](https://github.com/revertable/cocs/tree/master/src/main/resources/static/js) 
-해당 디렉토리에 포함된 유틸리티 파일들은 단순한 보조 도구를 넘어서, 프로젝트 내에서 프레임워크의 구조적 역할을 수행하도록 설계되었습니다.
+A teammate's comment, “React has something like this,” helped shape the state and request conventions. A teammate experienced in React said, “Add imports and Vue-specific tags, and this is basically Vue.js.” I wanted conventions the team could recognize and use together.
 
----
+ViewX plays on Vuex and represents **View + State + Context**. exios borrows its name and API style from axios. Both reflect my aim to make shared tools intuitive for teammates familiar with modern frontend development.
 
-## 🧩 핵심 공통 모듈 요약
+I described this as **implementing the philosophy of a framework**: creating reusable UX conventions through JavaScript and shared UI integration. I felt this simplified development and maintenance and improved team productivity. Later feedback stayed with me: “I've never seen someone maintain this much control and make progress on such a short schedule,” and “Building pages became really easy. Even with JSP being new to me, I could work comfortably.”
 
-| 모듈명 | 핵심 역할 |
-|--------|-----------|
-| `ViewX.js` | 전역 상태 감지 및 자동 렌더링 트리거<br><sub>(Vuex 발음에서 착안한 언어유희입니다만, View + State + Context의 의미를 가진 제 동료입니다.)</sub> |
-| `exios.js` | axios 스타일의 경량 HTTP 통신 모듈<br><sub>(이름은 ‘axios’에서 따온 언어유희입니다만, 실상은 단순한 ajax 포장 그 이상을 지향했습니다.<br>React만 써본 팀원도 금세 익숙해질 만큼, 범용성과 직관성을 갖춘 구조로 설계했습니다.)</sub> |
-| `SBUx-render.js` | 콘텐츠 변화 감지 및 UI 기능 자동 바인딩 |
-| `Router.js` | URL 이력 기반 내비게이션 및 중복 요청 차단 |
+The [decision notes](docs/engineering-decisions.md) combine the original README's experiences with my subsequent recollections on the same subjects: validation responsibilities, Service/ServiceImpl, asynchronous request timing, and shared screen and grid structure.
 
----
+This project is my answer to realizing a coherent structure within practical constraints. I see myself as a developer who thinks deeply about structure and adapts to schedules and requirements—a hands-on developer with a thinking mind.
 
-## 🧠 개발 철학
-> 구조는 곧 품질이며, 반복을 줄이는 것이 유지보수의 시작입니다.
+## Source and publication
 
-COC'S는 외부 프레임워크 없이도,  
-'재사용 가능한 UX 구조'를 직접 구현해낸 실전 사례입니다.
+Code selection uses the [baseline commit](https://github.com/revertable/cocs/tree/ffc04bfbac31d731e98e6589f97e8ea30f4a94cb). The [README at that commit](https://github.com/revertable/cocs/blob/ffc04bfbac31d731e98e6589f97e8ea30f4a94cb/README.md) and the author's subsequent recollections provide the narrative context. The repository presents selected source files and bilingual reading notes for portfolio use.
 
-레거시 환경이더라도 구조화만으로 충분한 통제력을 확보할 수 있으며,  
-그 결과 프로젝트 복잡도를 줄이고, 팀 전체의 생산성까지 끌어올릴 수 있다는 것을 증명했습니다.
+[LICENSE](LICENSE) retains the baseline publication terms.
 
-React만 써본 팀원조차  
-“import랑 vue 전용 태그만 붙이면 그냥 Vue.js네요.”  
-라며 놀라워했을 만큼, 이 구조는 직관적이면서도 강력한 통제력을 지녔습니다.
-"리액트엔 이런 게 있어요"  
-팀원의 한 마디에서 출발해, 프레임워크 없이도 전역 상태 관리와 요청 제어 구조를 바닐라 JS로 완성했습니다.  
-**프레임워크를 사용한 것이 아니라, 프레임워크의 철학을 구현한 것입니다.**
+## Documentation history
 
----
-
-## 💬 프로젝트 중 있었던 결정 일화
-
-### 1️⃣ 오류 메시지 정책에 대한 기술 이사와의 충돌
-한 기술이사는 DB에 오류가 발생했을 때, "어느 필드에서 오류가 났는지를 상세히 서버에서 응답해야 한다"고 주장했습니다.
-하지만 저는 반대로, 사용자가 유효하지 않은 데이터를 입력했을 때는, 그 즉시 프론트엔드에서 감지하고 사용자에게 피드백을 주는 것이 더 낫다고 판단했습니다.
-
-결국 저희는 다음과 같은 구조를 선택했습니다:
-
-프론트엔드는 실시간 검증(Validation)을 책임진다.
-
-서버는 단순히 “요청이 유효한가, 아닌가”만 판단한다.
-
-상세 오류 메시지는 UI의 책임이며, 백엔드는 보안을 위해 최소한의 정보만 제공한다.
-
-이 결정은 이후 전체 사이클의 단순화와 유지보수성 향상으로 이어졌고,
-프론트엔드 개발자들로부터도 "예상 외로 쉽고, 명확했다"는 긍정적인 피드백을 받았습니다.
-
-### 2️⃣ ServiceImpl 구조에 대한 팀 내 설계 논쟁
-또 하나의 쟁점은 서비스와 구현 클래스(Service/ServiceImpl)를 분리해야 하는가에 대한 논의였습니다.
-
-일부 개발자는 다음과 같은 주장을 했습니다:
-
-“서비스 인터페이스를 분리해 두면 나중에 테스트를 위한 Mock 구현체나 새로운 구현 클래스를 추가할 수 있고,
-확장성과 유연성이 보장된다.”
-
-하지만 저는 실전 경험에 기반한 현실적인 관점에서 다음과 같이 판단했습니다:
-
-“Impl 구조는 많은 SI 프로젝트에서 사실상 형식적인 껍데기일 뿐입니다.
-현실적으로 인터페이스를 대체하는 구현이 생기는 일은 드뭅니다.
-오히려 코드 복잡도만 늘고, 실수만 유발됩니다.”
-
-결론적으로, 우리는 ServiceImpl 없이 단일 서비스 클래스로 통합된 구조를 선택했습니다.
-이는 개발 속도와 가독성을 높이고, 오히려 유지보수를 더 단순화하는 데 기여했습니다.
-
-### 3️⃣ exios의 취소 토큰 기능과 SPA 환경에서의 한계
-exios는 axios 스타일의 커스텀 HTTP 유틸리티로, 요청 취소 토큰 기능을 자체 구현하여
-동시 요청 방지, 중복 요청 취소 등의 구조적 이점을 노렸습니다.
-
-하지만 SPA 방식 구조 특성상,
-한 화면에서 조회가 길어지는 동안 다른 화면으로 전환되었을 때,
-이전 화면의 응답이 다음 화면에 도착해버리는 치명적인 문제가 발생했습니다.
-
-이론상 요청이 취소되어야 했지만,
-실제 환경에서는 페이지 전환과 JS 모듈 분리 구조 간의 미세한 타이밍 문제로 인해
-응답이 유효하다고 판단된 후 렌더링까지 이뤄졌던 것입니다.
-
-이 문제를 어떻게 해결했는지는 지금에 와선 명확히 기억나진 않지만,
-당시 저는 이 문제를 계기로 “취소 토큰의 한계”와
-“SPA 환경에서의 요청 타이밍 통제의 중요성”을 실무적으로 깊이 체감했습니다.
-
-이후 관련 기능은 단순한 요청 취소보다,
-**'응답 도착 시 유효성 조건을 재확인하는 구조'**로 전환되어,
-일정 시점 이후에는 반드시 요청을 무시하거나 폐기하도록 개선되었습니다.
-
-### ✅ 교훈
-기술적으로 '가능한 구조'와,
-실제 현장에서 '신뢰할 수 있는 구조'는 다르다.
-특히 비동기 환경에서의 상태 보존과 무효화는 설계의 핵심이다.
-
----
-
-## 📌 주요 기여 및 역할
-- ✅ **전체 백엔드 아키텍처 설계**
-  - Spring Boot 기반의 모듈 구조 설계
-- ✅ **공통 기능 설계 및 구현**
-  - SBUx: 공통 컴포넌트 프레임워크로, 페이지 공통 구조, 사용자 권한 제어, 메뉴 바인딩 등 UI/UX 통합 전략 수립 및 구현
-  - SBGrid: 그리드 기반의 데이터 입력/조회/엑셀 연동 등 주요 공정 데이터 처리 로직 통합
-- ✅ **팀장 역할 수행**
-  - 개발 가이드라인 수립 및 전파
-  - 기술 스택 선정 주도 및 프로젝트 초반 기술 검토 리딩
-  - 팀원 코드 리뷰 및 품질 관리 전담
-
- ---
-
- 🧩 마무리 코멘트
- 
-→ *이 프로젝트는 "프레임워크 없이 프레임워크를 만든", 실전 중심의 구조 설계 사례입니다.*
-
-본 프로젝트는 현실적인 제약 속에서도 이상적인 구조를 실현할 수 있는가에 대한 저만의 해답이 담긴 사례입니다.
-
-저는 구조를 고민하는 개발자이지만,
-정해진 일정과 요구사항 안에서도 유연하게 대응할 수 있는 실전형 개발자이기도 합니다.
-
-요약하자면, **"사고하는 손"을 가진 손발입니다.** 🧠
-
----
-
-## 📝 문서 작업 이력
-
-- **2026-03-26**
-  - README를 포트폴리오 목적에 맞게 정비했습니다.
-  - 대표 화면 링크를 실제 경로 기준으로 바로잡고 설명 구조를 수정했습니다.
-  - 문서 품질 검증(링크 정합성 점검)은 OpenAI Codex와의 협업으로 진행했습니다.
+- **2026-03-26:** Refined the portfolio README and corrected representative screen paths. Link consistency was checked in collaboration with OpenAI Codex.
+- **2026-10-31:** Reorganized the portfolio into four code-reading cases, preserving original code files and aligning the English and Korean accounts of the author's experience and design choices.

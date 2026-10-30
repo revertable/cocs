@@ -1,0 +1,3 @@
+* text=auto eol=lf
+cases/** -text whitespace=cr-at-eol
+LICENSE -text whitespace=cr-at-eol

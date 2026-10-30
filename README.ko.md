@@ -1,0 +1,70 @@
+# COC'S
+
+[English](README.md)
+
+COC'S는 건설 ERP 프로젝트의 실제 구현 코드와 엔지니어링적 판단 중 일부를 소개하는 저장소입니다. 이음아이앤씨와 계약하여 한국비즈텍의 ERP 시스템 구축에 참여했으며, 개발팀장으로서 Spring Boot 아키텍처 설계와 공통 코드 구현을 주도했습니다.
+
+시스템은 사용자 관리, 공정 관리, 품의·결재, 실적 집계 등 건설 업무를 지원했습니다. 회사로부터 비상업적 포트폴리오 공개 허가를 받은 팀 프로젝트이며, 공개 조건은 [LICENSE](LICENSE)에 기록되어 있습니다.
+
+## 담당 역할
+
+- 백엔드 아키텍처와 Spring Boot 모듈 구조 설계.
+- 페이지 공통 구조, 사용자 권한 제어, 메뉴 바인딩과 SBUx 연동 설계·구현.
+- SBGrid 기반 데이터 입력·조회·Excel 흐름의 공통화.
+- 기술 스택 선정과 초기 기술 검토 주도, 개발 가이드라인 수립·전파, 팀원 코드 리뷰와 품질 관리.
+
+SBUx와 SBGrid는 외부 제품입니다. 저는 제품을 둘러싼 공통 구조와 통합 코드를 설계·구현했습니다. SBGrid API에 직접 작성한 JavaScript를 결합해 여러 업무 화면에서 재사용하는 공통 확장 계층을 구성했습니다.
+
+## 기술 구성
+
+| 영역 | 기존 README에 기록된 기술 |
+|---|---|
+| Backend | Java 17, Spring Boot 3.0.11 |
+| Template engine | Thymeleaf 3.1.4 |
+| Database | Oracle |
+| Frontend component | SBGrid |
+| Build tool | Gradle |
+
+## 설계 판단과 코드
+
+선별한 코드와 설계 맥락을 함께 읽는 구조로 정리했습니다. 공개 코드 14개 전체는 **Excerpt**로, 커밋 `ffc04bfbac31d731e98e6589f97e8ea30f4a94cb`에서 선택한 원본 파일을 바이트·이름·주석 그대로 보존합니다. [출처 manifest](docs/source-manifest.json)에 원본 경로와 SHA-256 해시를 기록했습니다.
+
+| 사례 | 설계 초점 | 읽기 시작점 |
+|---|---|---|
+| 01 | 화면 상태와 컴포넌트 초기화의 공통화 | [ViewX.js](cases/01-screen-lifecycle/ViewX.js) · [설계 기록](docs/engineering-decisions.ko.md#case-01) |
+| 02 | 익숙한 HTTP API와 화면 전환 제어 | [exios](cases/02-requests-and-navigation/Korbiztech.exios.js) · [설계 기록](docs/engineering-decisions.ko.md#case-02) |
+| 03 | 재사용 가능한 그리드 동작과 통합 | [Korbiztech.js](cases/03-grid-integration/Korbiztech.js) · [설계 기록](docs/engineering-decisions.ko.md#case-03) |
+| 04 | 화면 동작에서 서버 저장까지의 연결 | [BGA010.html](cases/04-grid-save-pipeline/BGA010.html) · [설계 기록](docs/engineering-decisions.ko.md#case-04) |
+
+BGA010은 공통 저장 흐름을 간결하게 읽는 예시입니다. 기존 README의 대표 화면인 [BGA030.html](https://github.com/revertable/cocs/blob/ffc04bfbac31d731e98e6589f97e8ea30f4a94cb/src/main/resources/templates/CM/BG/BGA030.html)은 트리·다중 그리드·파일 업로드·BGA031~BGA034 모달을 함께 다룹니다. 해당 [서비스](https://github.com/revertable/cocs/blob/ffc04bfbac31d731e98e6589f97e8ea30f4a94cb/src/main/java/com/korbiztech/product/cocs/CM/BG/service/BGA030_Service.java)는 그리드 저장·업로드·트리 조회의 확장된 업무 맥락을 보여줍니다.
+
+## 구조를 설계하며 생각했던 것
+
+> 구조는 곧 품질이며, 반복을 줄이는 것이 유지보수의 시작입니다.
+
+화면 상태와 핸들러, 요청, 컴포넌트 초기화, 그리드 편집, 서버 저장까지 전체 사이클을 이해하고 통제하는 구조를 만들고 싶었습니다. 짧은 일정의 0 → 1 프로젝트에서 직접 판단하고 구현하며 아키텍처와 공통 기반을 마련했습니다.
+
+개발팀장으로서 우선한 것은 팀 전체가 사용할 공통 기반과 개발 규약이었습니다. 상위 관리자는 눈에 보이는 업무 화면으로 진도를 평가했고, 직접 화면 하나를 구현해 진도를 보여 달라는 요구도 받았습니다. 저는 그 화면과 여러 화면을 팀원들이 구현할 수 있는 구조에 집중했습니다. 개별 화면의 완성과 팀 전체의 개발 기반이라는 진도 판단의 차이였습니다.
+
+그리드 기본 동작을 구현하는 단계부터 숫자 정렬과 빈값 검증에 관한 수정 요구도 들어왔습니다. 검증과 화면 완성도를 중요하게 생각하면서, 공통 동작을 먼저 완성하고 세부 검증과 표시 규칙을 후속 단계에서 다듬는 순서를 선택했습니다.
+
+“리액트엔 이런 게 있어요.” 팀원의 한마디는 상태와 요청 규약을 만드는 데 영향을 주었습니다. React 경험이 있던 팀원은 “import랑 vue 전용 태그만 붙이면 그냥 Vue.js네요”라고 말했습니다. 팀이 알아보고 함께 사용할 수 있는 규약을 만들고 싶었습니다.
+
+ViewX는 Vuex 발음에서 착안한 이름이며 **View + State + Context**라는 의미를 담았습니다. exios는 axios의 이름과 API 스타일을 참고했습니다. 두 이름에는 현대적인 프런트엔드 개발에 익숙한 팀원들이 직관적으로 사용할 공통 도구를 만들겠다는 의도가 담겨 있습니다.
+
+저는 이를 **프레임워크의 철학을 구현한 것**이라고 표현했습니다. JavaScript와 공통 UI 연동으로 재사용 가능한 UX 규약을 만드는 접근이었습니다. 이 구조가 개발·유지보수를 단순하게 하고 팀 생산성을 높였다고 느꼈습니다. 이후 들었던 “기간도 짧은데 이 정도로 컨트롤하면서 진도 빼는 사람 처음 봤다”, “페이지 만드는 게 진짜 쉬워졌다. 특히 JSP를 처음 하는데도 무리 없다”는 피드백도 기억에 남습니다.
+
+[설계 기록](docs/engineering-decisions.ko.md)에는 기존 README의 경험과 같은 주제에 관한 후속 회고를 함께 담았습니다. 검증 책임, Service/ServiceImpl, 비동기 요청 타이밍, 화면·그리드 공통 구조에 관한 판단을 읽을 수 있습니다.
+
+현실적인 제약 안에서 원하는 구조를 실현할 수 있는가에 대한 제 나름의 해답이 담긴 프로젝트입니다. 구조를 깊이 고민하면서 일정과 요구사항에 유연하게 대응하는 실전형 개발자, **사고하는 손**을 가진 개발자이고자 했습니다.
+
+## 출처와 공개
+
+코드 선정은 [기준 커밋](https://github.com/revertable/cocs/tree/ffc04bfbac31d731e98e6589f97e8ea30f4a94cb)을 따릅니다. [해당 커밋의 README](https://github.com/revertable/cocs/blob/ffc04bfbac31d731e98e6589f97e8ea30f4a94cb/README.md)와 작성자의 후속 회고를 서술의 근거로 삼았습니다. 저장소는 포트폴리오용 선별 소스와 한영 읽기 안내로 구성합니다.
+
+[LICENSE](LICENSE)는 기준 커밋의 공개 조건을 보존합니다.
+
+## 문서 작업 이력
+
+- **2026-03-26:** README를 포트폴리오 목적에 맞게 정리하고 대표 화면 경로를 바로잡았습니다. 링크 정합성은 OpenAI Codex와 협업해 점검했습니다.
+- **2026-10-31:** 원본 코드 파일을 보존하며 네 가지 코드 읽기 사례로 재구성하고, 작성자의 경험과 설계 판단을 설명하는 한영 문서의 의미를 맞췄습니다.
