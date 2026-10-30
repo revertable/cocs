@@ -44,21 +44,31 @@ BGA010 provides a compact reading path through the shared save flow. The origina
 
 I wanted the team to understand and control the entire cycle: screen state, handlers, requests, component initialization, grid editing, and server persistence. In a short-schedule, 0 → 1 project, I made architectural decisions and built the shared foundation through hands-on development.
 
-As development lead, I prioritized foundations and conventions for the whole team. Management assessed progress through visible business screens and asked me to implement a screen to demonstrate progress. My focus was on enabling teammates to build that screen and many others. This was a difference in how we assessed progress: individual screen delivery and the shared foundation for the team's work.
-
-Requests concerning numeric alignment and empty-value validation arrived while basic grid operations were taking shape. I valued validation and screen polish, and chose a sequence that established shared behavior first, then refined validation and presentation rules.
-
 A teammate's comment, “React has something like this,” helped shape the state and request conventions. A teammate experienced in React said, “Add imports and Vue-specific tags, and this is basically Vue.js.” I wanted conventions the team could recognize and use together.
 
 ViewX plays on Vuex and represents **View + State + Context**. exios borrows its name and API style from axios. Both reflect my aim to make shared tools intuitive for teammates familiar with modern frontend development.
 
-I described this as **implementing the philosophy of a framework**: creating reusable UX conventions through JavaScript and shared UI integration. I felt this simplified development and maintenance and improved team productivity. Later feedback stayed with me: “I've never seen someone maintain this much control and make progress on such a short schedule,” and “Building pages became really easy. Even with JSP being new to me, I could work comfortably.”
+I described this as **implementing the philosophy of a framework**: creating reusable UX conventions through JavaScript and shared UI integration. I felt this simplified development and maintenance and improved team productivity.
 
 The [decision notes](docs/engineering-decisions.md) combine the original README's experiences with my subsequent recollections on the same subjects: validation responsibilities, Service/ServiceImpl, asynchronous request timing, and shared screen and grid structure.
 
 This project is my answer to realizing a coherent structure within practical constraints. I see myself as a developer who thinks deeply about structure and adapts to schedules and requirements—a hands-on developer with a thinking mind.
 
 ## Design debates and development experience
+
+### Prioritizing shared foundations: the company head's request and the team's feedback
+
+**The company head wanted me to make progress by implementing business screens myself.** Visible screen completion was the measure of progress, and I was asked to implement a screen to demonstrate it.
+
+**I prioritized shared foundations and development conventions for the whole team.** I focused on connecting screen state, requests, and grid operations so teammates could implement that screen and many others consistently. This was a difference in how we assessed progress: individual screen delivery and the shared foundation for the team's work.
+
+Requests concerning numeric alignment and empty-value validation arrived while basic grid operations were taking shape. I chose a sequence that established shared behavior first, then refined validation and presentation rules.
+
+**Teammates who used the shared structure gave positive feedback that building screens had become easier.** Their comments stayed with me:
+
+> “I've never seen someone maintain this much control and make progress on such a short schedule.”
+>
+> “Building pages became really easy. Even with JSP being new to me, I could work comfortably.”
 
 ### Error-message policy: disagreement with the technical director
 
