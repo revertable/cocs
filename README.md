@@ -58,6 +58,26 @@ The [decision notes](docs/engineering-decisions.md) combine the original README'
 
 This project is my answer to realizing a coherent structure within practical constraints. I see myself as a developer who thinks deeply about structure and adapts to schedules and requirements—a hands-on developer with a thinking mind.
 
+## Design debates and development experience
+
+### Error-message policy: disagreement with the technical director
+
+A technical director argued that the server should respond to database errors with details identifying the affected field. I judged that detecting invalid input immediately in the frontend and giving feedback where the user was working would be more helpful.
+
+We ultimately chose a policy in which the frontend handled real-time validation and detailed user guidance, while the server assessed request validity and provided minimal information for security. I felt this division simplified the overall cycle and maintenance. Frontend developers described it as “unexpectedly easy and clear.”
+
+### Service/ServiceImpl: the team's structural debate
+
+Some developers emphasized extensibility and flexibility, arguing that separate service interfaces made mock implementations and future alternatives easier to add. I weighed how often alternative implementations arose in SI projects against the complexity, opportunities for mistakes, and implementation and maintenance costs of additional layers.
+
+The team chose a single concrete service-class structure. I felt this improved development speed and readability and simplified maintenance. The decision prioritized a structure the team could implement and maintain within the short schedule.
+
+### exios: screen transitions and asynchronous response timing
+
+During SPA-style screen transitions, a long-running query from the previous screen returned after navigation and rendered on the next screen. I recalled a timing interaction between page transitions and separate JavaScript modules.
+
+The improvement direction I remember was to recheck validity when the response arrived and ignore or discard requests after the relevant point in time. This experience brought home the importance of state preservation, invalidation, and request timing in asynchronous environments.
+
 ## Source and publication
 
 Code selection uses the [baseline commit](https://github.com/revertable/cocs/tree/ffc04bfbac31d731e98e6589f97e8ea30f4a94cb). The [README at that commit](https://github.com/revertable/cocs/blob/ffc04bfbac31d731e98e6589f97e8ea30f4a94cb/README.md) and the author's subsequent recollections provide the narrative context. The repository presents selected source files and bilingual reading notes for portfolio use.

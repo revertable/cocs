@@ -54,7 +54,7 @@ The improvement direction I remember was to **recheck validity when the response
 | Change data, parsing, and business values | [SaveGridDataVO.java](../cases/04-grid-save-pipeline/SaveGridDataVO.java) · [JsonUtil.java](../cases/04-grid-save-pipeline/JsonUtil.java) · [BGA010_VO.java](../cases/04-grid-save-pipeline/BGA010_VO.java) |
 | Persistence interface and SQL mapping | [BGA010_DAO.java](../cases/04-grid-save-pipeline/BGA010_DAO.java) · [BGA010.xml](../cases/04-grid-save-pipeline/BGA010.xml) |
 
-### Validation and error-message responsibilities
+### Error-message policy: disagreement with the technical director
 
 A technical director advocated detailed server responses identifying which field caused a database error. I favored immediate frontend validation and feedback where the user was working.
 

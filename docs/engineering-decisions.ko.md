@@ -54,7 +54,7 @@
 | 변경 데이터·파싱·업무 값 | [SaveGridDataVO.java](../cases/04-grid-save-pipeline/SaveGridDataVO.java) · [JsonUtil.java](../cases/04-grid-save-pipeline/JsonUtil.java) · [BGA010_VO.java](../cases/04-grid-save-pipeline/BGA010_VO.java) |
 | 저장 인터페이스와 SQL 매핑 | [BGA010_DAO.java](../cases/04-grid-save-pipeline/BGA010_DAO.java) · [BGA010.xml](../cases/04-grid-save-pipeline/BGA010.xml) |
 
-### 검증과 오류 메시지의 책임
+### 오류 메시지 정책: 기술이사와의 의견 차이
 
 한 기술 이사는 DB 오류가 발생한 필드를 서버에서 상세히 응답해야 한다고 주장했습니다. 저는 사용자가 작업하는 자리에서 프런트엔드가 즉시 검증하고 피드백을 주는 방식을 선호했습니다.
 
